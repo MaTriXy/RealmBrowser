@@ -1,0 +1,18 @@
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="io.github.gjyaiya.realmbrowser">
+
+    <application android:allowBackup="true">
+        <activity
+                android:name=".RealmFilesActivity"
+                android:label="@string/rb_title"/>
+        <activity
+                android:name=".RealmModelsActivity"
+                android:label="@string/rb_title"/>
+        <activity
+                android:name=".RealmBrowserActivity"
+                android:label="@string/rb_title"/>
+        <activity
+                android:name=".SettingsActivity"
+                android:label="@string/rb_title"/>
+    </application>
+</manifest>
