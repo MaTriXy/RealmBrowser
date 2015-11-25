@@ -2,4 +2,6 @@
 <resources>
     <color name="rb_grey">#eeeeee</color>
     <color name="rb_white">#ffffff</color>
+
+    <color name="rb_blue">#FF00A0DC</color>
 </resources>

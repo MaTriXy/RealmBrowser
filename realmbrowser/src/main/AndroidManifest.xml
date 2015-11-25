@@ -3,6 +3,9 @@
 
     <application android:allowBackup="true">
         <activity
+            android:name=".RealmActivity"
+            android:label="@string/rb_title" />
+        <activity
                 android:name=".RealmFilesActivity"
                 android:label="@string/rb_title"/>
         <activity

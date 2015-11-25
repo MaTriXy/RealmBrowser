@@ -74,8 +74,8 @@ public class RealmBrowserActivity extends Activity implements RealmAdapter.Liste
         int mVersion = RealmBrowser.getInstance().getVersion();
 
         RealmConfiguration.Builder mBuilder = new RealmConfiguration.Builder(this).name(realmFileName);
-        if(RealmBrowser.getInstance().getModules() != null)
-            mBuilder.setModules(RealmBrowser.getInstance().getModules());
+        if(RealmBrowser.getInstance().getSchema() != null)
+            mBuilder.setModules(RealmBrowser.getInstance().getSchema());
         if(mVersion != 0) mBuilder.schemaVersion(mVersion);
 
         RealmConfiguration config = mBuilder.build();

@@ -10,7 +10,7 @@ import java.lang.reflect.ParameterizedType;
 public class MagicUtils {
 
     @Nullable
-    public static String createMethodName(@NonNull Field field) {
+    public static String createMethodName(Field field) {
         String methodName;
         if (field.getType().equals(boolean.class)) {
             if (field.getName().contains("is")) {
@@ -41,12 +41,12 @@ public class MagicUtils {
 
     }
 
-    public static  boolean isParameterizedField(@NonNull Field field) {
+    public static  boolean isParameterizedField(Field field) {
         return field.getGenericType() instanceof ParameterizedType;
     }
 
     @Nullable
-    public static  String createParameterizedName(@NonNull Field field) {
+    public static  String createParameterizedName(Field field) {
         ParameterizedType pType = (ParameterizedType) field.getGenericType();
         String rawType = pType.getRawType().toString();
         int rawTypeIndex = rawType.lastIndexOf(".");

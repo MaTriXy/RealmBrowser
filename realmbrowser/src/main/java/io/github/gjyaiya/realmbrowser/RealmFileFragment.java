@@ -1,9 +1,10 @@
 package io.github.gjyaiya.realmbrowser;
 
-import android.app.Activity;
-import android.content.Intent;
+import android.app.Fragment;
 import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
@@ -17,27 +18,28 @@ import io.realm.Realm;
 import io.realm.RealmConfiguration;
 import io.realm.exceptions.RealmMigrationNeededException;
 
-
-public class RealmFilesActivity extends Activity {
-
+public class RealmFileFragment extends Fragment{
     private List<String> mIgnoreExtensionList;
     private ArrayAdapter<String> mAdapter;
 
-    public static void start(Activity activity) {
-        Intent intent = new Intent(activity, RealmFilesActivity.class);
-        activity.startActivity(intent);
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        ListView mListView = new ListView(getActivity());
+        mListView.setClickable(true);
+        mListView.setBackgroundColor(getActivity().getResources().getColor(R.color.rb_white));
+        mListView.setLayoutParams(new ViewGroup.LayoutParams(
+                ViewGroup.LayoutParams.MATCH_PARENT,
+                ViewGroup.LayoutParams.MATCH_PARENT));
+        return mListView;
     }
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.ac_realm_list_view);
-
+    public void onViewCreated(View view, Bundle savedInstanceState) {
         mIgnoreExtensionList = new ArrayList<>();
         mIgnoreExtensionList.add(".log");
         mIgnoreExtensionList.add(".lock");
 
-        File dataDir = new File(getApplicationInfo().dataDir, "files");
+        File dataDir = new File(getActivity().getApplicationInfo().dataDir, "files");
         File[] files = dataDir.listFiles();
         List<String> fileList = new ArrayList<>();
         for (File file : files) {
@@ -47,8 +49,8 @@ public class RealmFilesActivity extends Activity {
             }
         }
 
-        mAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, fileList);
-        ListView listView = (ListView) findViewById(R.id.listView);
+        mAdapter = new ArrayAdapter<>(getActivity(), android.R.layout.simple_list_item_1, fileList);
+        ListView listView = (ListView)view;
         listView.setAdapter(mAdapter);
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -71,16 +73,17 @@ public class RealmFilesActivity extends Activity {
     private void onItemClicked(int position) {
         try {
             String realmFileName = mAdapter.getItem(position);
-            RealmConfiguration config = new RealmConfiguration.Builder(this)
+            RealmConfiguration config = new RealmConfiguration.Builder(getActivity())
                     .name(realmFileName)
                     .build();
             Realm realm = Realm.getInstance(config);
             realm.close();
-            RealmModelsActivity.start(this, realmFileName);
+            //RealmModelsActivity.start(getActivity(), realmFileName);
+            RealmActivity.gotoFragment(getActivity(),new RealmModelFragment());
         } catch (RealmMigrationNeededException e) {
-            Toast.makeText(getApplicationContext(), "RealmMigrationNeededException", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getActivity(), "RealmMigrationNeededException", Toast.LENGTH_SHORT).show();
         } catch (Exception e) {
-            Toast.makeText(getApplicationContext(), "Can't open realm instance", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getActivity(), "Can't open realm instance", Toast.LENGTH_SHORT).show();
         }
     }
 }
